@@ -6,27 +6,25 @@
 
 // You may reuse elements of `wordBank` as many times as needed
 
-function canConstruct(target, wordBank, memo = {}) {
-    if(target === "") return true
-    if(wordBank.includes(target)) return true
-    if(target in memo) return memo[target]
+function canConstruct(target, wordBank) {
+    const table = Array(target.length + 1).fill(false)
 
-    for(const word of wordBank) {
-        if(!target.startsWith(word)) {
-            continue; 
-        }
+    table[0] = true
 
-        const remainder = target.replace(word, "")
-
-        const result = canConstruct(remainder, wordBank, memo)
-        if(result === true) {
-            memo[target] = true
-            return true
+    for(let i = 0; i <= target.length; i++) {
+        if(table[i] === true) {
+            for(const word of wordBank) {
+                // checks if word is part of the target string at the position we're in
+                if(target.slice(i, i + word.length) === word) {
+                    if(i + word.length <= target.length) {
+                        table[i + word.length] = true
+                    }
+                }
+            }
         }
     }
 
-    memo[target] = false
-    return false
+    return table[target.length]
 }
 
 console.log(canConstruct("skateboard", ["sk", "te", "bo"])) // false

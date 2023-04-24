@@ -8,21 +8,22 @@
 // You may use the numbers as many times as needed and
 // assume all the numbers are non-negative.
 
-function canSum(targetSum, numbers, memo = {}) {
-    if (targetSum === 0) return true;
-    if (numbers.includes(targetSum)) return true;
-    if (targetSum < 0) return false;
-    if (targetSum in memo) return memo[targetSum];
+function canSum(target, numbers) {
+    const table = Array(target + 1).fill(false)
 
-    for (const num of numbers) {
-        const remainder = targetSum - num;
-        memo[remainder] = canSum(remainder, numbers, memo);
-        if (memo[remainder] === true) {
-            return true;
+    table[0] = true
+
+    for(let i = 0; i <= target; i++) {
+        if(table[i] === true) {
+            for(const number of numbers) {
+                if(i + number <= target) {
+                    table[i + number] = true
+                }
+            }
         }
     }
 
-    return false;
+    return table[target]
 }
 
 console.log(canSum(7, [2, 3])); // true
@@ -30,3 +31,5 @@ console.log(canSum(7, [5, 3, 5, 7])); // true
 console.log(canSum(7, [2, 4])); // false
 console.log(canSum(8, [2, 3, 5])); // true
 console.log(canSum(300, [7, 14])); // false
+
+// time complexity is O(m * n)
