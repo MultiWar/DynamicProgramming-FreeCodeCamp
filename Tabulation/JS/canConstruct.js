@@ -16,9 +16,7 @@ function canConstruct(target, wordBank) {
             for(const word of wordBank) {
                 // checks if word is part of the target string at the position we're in
                 if(target.slice(i, i + word.length) === word) {
-                    if(i + word.length <= target.length) {
-                        table[i + word.length] = true
-                    }
+                    table[i + word.length] = true
                 }
             }
         }
